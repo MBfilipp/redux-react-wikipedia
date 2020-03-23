@@ -1,1 +1,1 @@
-const __INIT__ = "__INIT__"
+export const SET_ARTICLES = 'SET_ARTICLES'

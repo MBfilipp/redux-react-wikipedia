@@ -1,4 +1,7 @@
 import React from 'react'
+import { DebounceInput } from 'react-debounce-input'
+import { fetchReguest } from '../redux/actions'
+import { connect } from 'react-redux'
 
 class WikiSearch extends React.Component {
     constructor(props) {
@@ -14,16 +17,32 @@ class WikiSearch extends React.Component {
         this.setState(prev => ({...prev, ...{
             [event.target.name]: event.target.value
         }}))
-        console.log(this.state.text)
+
+        const {text} = this.state
+
+        if(!text.trim()) return
+
+        this.props.fetchReguest(this.state.text)
     }
 
     render() {
         return (
             <form className="form-group w-75 mx-auto">
-                <input onChange={this.onChangeHandler} type="text" className="form-control" id="title" name="text" value={this.state.text} placeholder="Введите запрос"/>
+                <DebounceInput 
+                    onChange={this.onChangeHandler} 
+                    debounceTimeout={500} 
+                    className="form-control" 
+                    id="title" 
+                    name="text" 
+                    value={this.state.text} 
+                    placeholder="Введите запрос"
+                />
             </form>   
         )
     }
 }
 
-export default WikiSearch
+const mapDispatchToProps = {
+    fetchReguest
+}
+export default connect(null, mapDispatchToProps)(WikiSearch) 
